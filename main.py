@@ -6,6 +6,7 @@ from routes.pedido_route import router as pedido_router
 from routes.produto_route import router as produto_router
 from routes.setor_route import router as setor_router
 from routes.pedidoproduto_route import router as pedidoproduto_router
+from routes.carrinho_route import router as carrinho_router
 
 
 app = FastAPI(
@@ -20,29 +21,31 @@ app.include_router(pedido_router)
 app.include_router(produto_router)
 app.include_router(setor_router)
 app.include_router(pedidoproduto_router)
+app.include_router(carrinho_router)
+
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods = ["*"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-
 @app.get("/")
 def root():
-
     return {
         "message": "API funcionando"
     }
 
 
-
 """
     PARA EXECUTAR O PROJETO DIGITE A LINHA DE COMANDO:
+
     uvicorn main:app --reload
 
-    python -m  uvicorn main:app --reload
+    OU:
+
+    python -m uvicorn main:app --reload
 """
