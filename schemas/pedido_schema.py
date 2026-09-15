@@ -1,3 +1,4 @@
+
 from datetime import date
 
 from pydantic import BaseModel, ConfigDict
@@ -6,11 +7,14 @@ from pydantic import BaseModel, ConfigDict
 class PedidoBase(BaseModel):
 
     idpessoa: int
+
     data_pedido: date
-    status_pedido: str
+
+    status_pedido: str = "A"
 
 
 class PedidoCreate(PedidoBase):
+
     pass
 
 
@@ -26,3 +30,4 @@ class PedidoResponse(PedidoBase):
     model_config = ConfigDict(
         from_attributes=True
     )
+

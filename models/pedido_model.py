@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import Date, ForeignKey, Integer, String
+from sqlalchemy import BigInteger, Date, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
@@ -17,7 +17,7 @@ class Pedido(Base):
     )
 
     idpessoa: Mapped[int] = mapped_column(
-        Integer,
+        BigInteger,
         ForeignKey("pessoa.idpessoa"),
         nullable=False
     )

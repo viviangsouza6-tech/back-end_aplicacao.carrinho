@@ -1,35 +1,55 @@
+
 class CarrinhoController:
 
     def __init__(self, service):
         self.service = service
 
-    def adicionar_produto(self, idpedido, idproduto, quantidade):
-
+    def adicionar_produto(
+        self,
+        idpessoa: int,
+        idproduto: int,
+        quantidade: int
+    ):
         return self.service.adicionar_produto(
-            idpedido,
+            idpessoa,
             idproduto,
             quantidade
         )
 
-    def listar_produtos(self, idpedido):
+    def listar_produtos(self, idpessoa: int):
+        return self.service.listar_produtos(
+            idpessoa
+        )
 
-        return self.service.listar_produtos(idpedido)
-
-    def alterar_quantidade(self, idpedido, idproduto, quantidade):
-
+    def alterar_quantidade(
+        self,
+        idpessoa: int,
+        idproduto: int,
+        quantidade: int
+    ):
         return self.service.alterar_quantidade(
-            idpedido,
+            idpessoa,
             idproduto,
             quantidade
         )
 
-    def remover_produto(self, idpedido, idproduto):
-
+    def remover_produto(
+        self,
+        idpessoa: int,
+        idproduto: int
+    ):
         return self.service.remover_produto(
-            idpedido,
+            idpessoa,
             idproduto
         )
 
-    def calcular_total(self, idpedido):
+    def calcular_total(self, idpessoa: int):
+        return self.service.calcular_total(
+            idpessoa
+        )
 
-        return self.service.calcular_total(idpedido)
+    def finalizar_carrinho(self, idpessoa: int):
+        return self.service.finalizar_carrinho(
+            idpessoa
+        )
+

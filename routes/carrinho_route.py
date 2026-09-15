@@ -1,11 +1,14 @@
-from fastapi import APIRouter
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from controllers.carrinho_controller import CarrinhoController
+from database import get_db
+from services.carrinho_service import CarrinhoService
 from schemas.carrinho_schema import (
     CarrinhoProdutoSchema,
     CarrinhoQuantidadeSchema
 )
-
-from services.carrinho_service import CarrinhoService
 
 
 router = APIRouter(
@@ -14,50 +17,89 @@ router = APIRouter(
 )
 
 
-carrinho_service = CarrinhoService()
-
-
-@router.post("/{idpedido}/produtos")
+@router.post("/{idpessoa}/produtos")
 def adicionar_produto(
-    idpedido: int,
-    dados: CarrinhoProdutoSchema
+    idpessoa: int,
+    dados: CarrinhoProdutoSchema,
+    db: Session = Depends(get_db)
 ):
-    return carrinho_service.adicionar_produto(
-        idpedido,
+    service = CarrinhoService(db)
+    controller = CarrinhoController(service)
+
+    return controller.adicionar_produto(
+        idpessoa,
         dados.idproduto,
         dados.quantidade
     )
 
 
-@router.get("/{idpedido}")
-def listar_carrinho(idpedido: int):
-    return carrinho_service.listar_produtos(idpedido)
-
-
-@router.put("/{idpedido}/produtos/{idproduto}")
-def alterar_quantidade(
-    idpedido: int,
-    idproduto: int,
-    dados: CarrinhoQuantidadeSchema
+@router.get("/{idpessoa}")
+def listar_carrinho(
+    idpessoa: int,
+    db: Session = Depends(get_db)
 ):
-    return carrinho_service.alterar_quantidade(
-        idpedido,
+    service = CarrinhoService(db)
+    controller = CarrinhoController(service)
+
+    return controller.listar_produtos(
+        idpessoa
+    )
+
+
+@router.put("/{idpessoa}/produtos/{idproduto}")
+def alterar_quantidade(
+    idpessoa: int,
+    idproduto: int,
+    dados: CarrinhoQuantidadeSchema,
+    db: Session = Depends(get_db)
+):
+    service = CarrinhoService(db)
+    controller = CarrinhoController(service)
+
+    return controller.alterar_quantidade(
+        idpessoa,
         idproduto,
         dados.quantidade
     )
 
 
-@router.delete("/{idpedido}/produtos/{idproduto}")
+@router.delete("/{idpessoa}/produtos/{idproduto}")
 def remover_produto(
-    idpedido: int,
-    idproduto: int
+    idpessoa: int,
+    idproduto: int,
+    db: Session = Depends(get_db)
 ):
-    return carrinho_service.remover_produto(
-        idpedido,
+    service = CarrinhoService(db)
+    controller = CarrinhoController(service)
+
+    return controller.remover_produto(
+        idpessoa,
         idproduto
     )
 
 
-@router.get("/{idpedido}/total")
-def calcular_total(idpedido: int):
-    return carrinho_service.calcular_total(idpedido)
+@router.get("/{idpessoa}/total")
+def calcular_total(
+    idpessoa: int,
+    db: Session = Depends(get_db)
+):
+    service = CarrinhoService(db)
+    controller = CarrinhoController(service)
+
+    return controller.calcular_total(
+        idpessoa
+    )
+
+
+@router.put("/{idpessoa}/finalizar")
+def finalizar_carrinho(
+    idpessoa: int,
+    db: Session = Depends(get_db)
+):
+    service = CarrinhoService(db)
+    controller = CarrinhoController(service)
+
+    return controller.finalizar_carrinho(
+        idpessoa
+    )
+
